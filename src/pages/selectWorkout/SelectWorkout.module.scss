@@ -55,7 +55,7 @@
   border: 1px solid #000000;
   border-radius: 26px;
   width: 278px;
-  // min-height: 76px;
+  min-height: 76px;
   padding: 11px 27px 11px 27px;
   padding-left: 27px;
   padding-right: 27px;
@@ -66,6 +66,10 @@
     font-weight: 400;
     line-height: 23px;
     text-align: center;
+    width: 250px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   &Made {
     display: flex;
@@ -86,6 +90,10 @@
       font-weight: 400;
       line-height: 23px;
       text-align: center;
+      width: 250px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
     &_img {
       position: absolute;
