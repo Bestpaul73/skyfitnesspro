@@ -40,19 +40,22 @@ const coursesSlice = createSlice({
     setUsersCourses(state, action) {
       state.usersCourses = action.payload;
     },
+    setCurrentWorkout(state, action) {
+      console.log(action.payload);
+      state.currentWorkout = action.payload;
+    },
   },
 });
 
-export const { setAllCourses, setAllWorkouts, setUsersCourses } =
+export const { setAllCourses, setAllWorkouts, setUsersCourses, setCurrentWorkout } =
+  //     setCurrentWorkout(state, action) {
+  //       console.log(action.payload);
+  //       state.currentWorkout = action.payload;
+  //     },
+  //   },
+  // });
 
-//     setCurrentWorkout(state, action) {
-//       console.log(action.payload);
-//       state.currentWorkout = action.payload;
-//     },
-//   },
-// });
-
-// export const { setAllCourses, setAllWorkouts, setCurrentWorkout } =
+  // export const { setAllCourses, setAllWorkouts, setCurrentWorkout } =
 
   coursesSlice.actions;
 

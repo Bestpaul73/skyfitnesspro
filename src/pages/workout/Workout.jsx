@@ -16,7 +16,7 @@ export const Workout = () => {
   const [coursePurchased, setCoursePurchased] = useState(false); //Флаг куплен ли текущий курс
   const courses = useSelector((state) => state.coursesApp.allCourses); //Все курсы
   const courseTemplates = useSelector((state) => state.coursesApp.usersCourses); //Шаблоны всех курсов
-  const currentUser = useSelector((state) => state.userApp.fullCurrentUser);  //Текущий пользователь с базы
+  const currentUser = useSelector((state) => state.userApp.fullCurrentUser); //Текущий пользователь с базы
   const courseName = params.id;
 
   //Проверяю наличие текущего курса среди курсов пользователя
@@ -107,7 +107,10 @@ export const Workout = () => {
               </p>
               {coursePurchased ? (
                 <Link to={`/profile`}>
-                  <Button children={"Перейти к курсу"} />
+                  <Button
+                    children={"Перейти к курсу"}
+                    className={"button_blue"}
+                  />
                 </Link>
               ) : (
                 <Button
@@ -115,6 +118,7 @@ export const Workout = () => {
                   onClick={() => {
                     signUpForTraining(courseName);
                   }}
+                  className={"button_blue"}
                 />
               )}
               <img src={phone} alt="" className={style.feedback_img} />

@@ -60,8 +60,8 @@ export const Login = ({ handlePopup }) => {
 
         <div className={style.buttonsContainer}>
 
-//           <Button onClick={handleLogin} children={'Войти'} className={styleButton.button_blue} />
-//           <Button onClick={handleRegisterClick} children={'Зарегистрироваться'} className={styleButton.button_white} />        
+          {/* <Button onClick={handleLogin} children={'Войти'} className={styleButton.button_blue} />
+           <Button onClick={handleRegisterClick} children={'Зарегистрироваться'} className={styleButton.button_white} />         */}
 
           <Button onClick={handleLogin} children={'Войти'} className={'button_blue'} />
           <Button onClick={handleRegisterClick} children={'Зарегистрироваться'} className={'button_white'} />
