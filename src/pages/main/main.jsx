@@ -3,7 +3,7 @@ import { ReactComponent as LogoWhiteSVG } from "./svg/logo_white.svg";
 
 
 import SaleSticker from './png/SaleSticker.png';
-import Yoga from './png/yoga.png';
+import Yoga from './png/Yoga.png';
 import Stratch from './png/Stretching.png';
 import Dance from './png/DanceFitness.png';
 import Step from './png/StepAirobic.png';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import style from './Training.module.scss';
 import { Button } from '../../UI/Button/Button';
 import { useSelector } from 'react-redux';
@@ -11,11 +11,11 @@ import { getDatabase, ref, child, push, update } from "firebase/database";
 export const Training = () => {
   const navigate = useNavigate();
   const currentId = localStorage.getItem("userId");
-  const params = useParams(); // Получение значения параметров `id` `courseId` из URL
+  const { courseId, id } = useParams(); // Получение значения параметров `id` `courseId` из URL
   // console.log(params);
   const workouts = useSelector((state) => state.coursesApp.allWorkouts);
   // console.log(workouts);
-  const workout = workouts?.filter((data) => data._id.includes(params.id));
+  const workout = workouts?.filter((data) => data._id.includes(id));
 
   const workoutName = workout ? workout[0].name : 'название не получено';
   const workoutVideo = workout ? workout[0].video : 'видео не найдено';
@@ -27,13 +27,13 @@ export const Training = () => {
   // console.log(currentWorkoutt)
   const [currentWorkout, setCurrentWorkout] = useState(currentWorkoutt)
   console.log(currentWorkout);
-  const course = courses?.filter((data) => data.nameEN.includes(params.courseId));
+  const course = courses?.filter((data) => data.nameEN.includes(courseId));
   const courseName = course ? course[0].nameRU : 'название не получено';
   const courseNameEN = course[0]?.nameEN;
   // console.log(course);
 
   const navigateToProgress = () => {
-    navigate('/progress');
+    navigate(`/${courseId}/training/${id}/progress`);
     // console.log(workoutExercises);
   };
 
@@ -111,6 +111,7 @@ function submitСhanges(a) {
             <Button onClick={()=>{completeWorkout(currentWorkout)}} className={'button_blue'} children={'Закончить тренировку'} />
           )}
         </section>
+        <Outlet />
       </main>
     </div>
   );

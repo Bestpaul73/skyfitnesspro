@@ -18,7 +18,7 @@ function App() {
       })
       .catch(() => {})
       .finally(() => {});
-  });
+  }, [dispatch]);
 
   //Получаем все тренировки
   useEffect(() => {
@@ -27,14 +27,14 @@ function App() {
 
       dispatch(setAllWorkouts(Object.values(workouts)));
     });
-  });
+  }, [dispatch]);
 
   //Получаем шаблоны всех курсов для пользователей
   useEffect(() => {
     getUsersCourses().then((usersCourses) => {
       dispatch(setUsersCourses(Object.values(usersCourses)));
     });
-  });
+  }, [dispatch]);
 
   //Получаем текущего пользователя
   useEffect(() => {
@@ -45,7 +45,7 @@ function App() {
         dispatch(setFullCurrentUser(currentUser));
       });
     }
-  });
+  }, [dispatch, currentId]);
 
   return (
     <>

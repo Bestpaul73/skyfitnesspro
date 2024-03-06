@@ -11,10 +11,10 @@ export const Progress = () => {
 
   const workouts = useSelector((state) => state.coursesApp.allWorkouts);
   const currentWorkout = useSelector((state) => state.coursesApp.currentWorkout);
-  const workout = workouts?.filter((data) => data._id.includes(currentWorkout));
+  // const workout = workouts?.filter((data) => data._id.includes(currentWorkout));
 
-  // console.log(workouts);
-  // console.log(currentWorkout);
+  console.log(workouts);
+  console.log(currentWorkout);
   // console.log(workout);
   // console.log(workout[0].exercises);
   // console.log(currentWorkout.exercises);
@@ -40,7 +40,7 @@ export const Progress = () => {
 
   const onFocusFirstInput = () => {
     const firstInputEl = document.getElementsByTagName('input');
-    firstInputEl[0].focus();
+    firstInputEl[0]?.focus();
   };
 
   useEffect(() => onFocusFirstInput(), []);
@@ -53,7 +53,7 @@ export const Progress = () => {
     >
       <div className={styles.progressForm} id='#popup'>
         <div className={styles.headerForm}>Мой прогресс</div>
-        {workout[0].exercises.map((el, index) => {
+        {currentWorkout?.exercises.map((el, index) => {
           return (
             <div key={index}>
               <div className={styles.textForm}>
