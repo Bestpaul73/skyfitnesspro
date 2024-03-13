@@ -13,6 +13,7 @@ import { NewPassword } from './pages/newPassword/newPassword';
 import { ProtectedRoute } from './components/ProtectedRoute'; // Assuming this is the correct path
 import { CoursePurchased } from './pages/workout/coursePurchased';
 import { WorkoutCompleted } from './pages/training/WorkoutCompleted';
+import { NotFound } from './pages/notFound/notFound';
 
 export const AppRoutes = ({ user }) => {
   return (
@@ -41,6 +42,8 @@ export const AppRoutes = ({ user }) => {
       </Route>
 
       {/* Other routes as needed */}
+      <Route path="*" element={<NotFound />} />
+
     </Routes>
   );
 };

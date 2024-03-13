@@ -5,24 +5,28 @@ import { setCurrentWorkout } from '../../store/coursesSlice';
 import { Link, useParams } from 'react-router-dom';
 import made from './made.png';
 import { UpdateUserDetails } from '../../components/userRequest';
+import { NotFound } from '../notFound/notFound';
 
 export const SelectWorkout = () => {
   const params = useParams();
   const [currentWorkoutsArr, setCurrentWorkoutsArr] = useState([]);
   const currentUser = useSelector((state) => state.userApp.fullCurrentUser);
+  const dispatch = useDispatch();
+  const [wrongCourseFlag, setWrongCourseFlag] = useState(false); //Флаг ошибочного курса в адресной строке
 
   useEffect(() => {
     if (currentUser) {
-      const arr = Object.values(currentUser.courses).find(
-        (course) => course.name === params.id
-      ).workouts;
-      setCurrentWorkoutsArr(Object.values(arr));
+      const wrongCourseFlag = !Object.values(currentUser.courses).find((course) => course.name === params.id);
+      setWrongCourseFlag(wrongCourseFlag);
+      if (!wrongCourseFlag) {
+        const arr = Object.values(currentUser.courses).find((course) => course.name === params.id).workouts;
+        setCurrentWorkoutsArr(Object.values(arr));
+      }
     }
   }, [currentUser, params.id]);
 
-  const dispatch = useDispatch();
-  UpdateUserDetails(dispatch);
-  
+  // UpdateUserDetails(dispatch);
+
   const handleClick = (el) => {
     console.log(el);
     localStorage.setItem('currentWorkout', el._id);
@@ -30,33 +34,33 @@ export const SelectWorkout = () => {
   };
 
   return (
-    <div className={style.selectWorkout}>
-      <div className={style.selectWorkout_box}>
-        <h1 className={style.selectWorkout_title}>Выберите тренировку</h1>
-        <div className={style.workouts}>
-          {currentWorkoutsArr?.map((el) => {
-            return (
-              <Link
-                to={`/${params.id}/training/${el._id}`}
-                className={style[`workout_${el.done}`]}
-                key={el.name}
-                onClick={() => {
-                  handleClick(el);
-                }}
-              >
-                <p className={style[`workoutText_${el.done}`]}>{el.name}</p>
-                {el.done && (
-                  <img
-                    className={style.workoutMade_img}
-                    src={made}
-                    alt='made'
-                  />
-                )}
-              </Link>
-            );
-          })}
+    <>
+      {wrongCourseFlag ? (
+        <NotFound />
+      ) : (
+        <div className={style.selectWorkout}>
+          <div className={style.selectWorkout_box}>
+            <h1 className={style.selectWorkout_title}>Выберите тренировку</h1>
+            <div className={style.workouts}>
+              {currentWorkoutsArr?.map((el) => {
+                return (
+                  <Link
+                    to={`/${params.id}/training/${el._id}`}
+                    className={style[`workout_${el.done}`]}
+                    key={el.name}
+                    onClick={() => {
+                      handleClick(el);
+                    }}
+                  >
+                    <p className={style[`workoutText_${el.done}`]}>{el.name}</p>
+                    {el.done && <img className={style.workoutMade_img} src={made} alt='made' />}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
