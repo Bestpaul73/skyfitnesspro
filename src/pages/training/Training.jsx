@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import style from './Training.module.scss';
 import { Button } from '../../UI/Button/Button';
@@ -7,6 +7,7 @@ import ReactPlayer from 'react-player/youtube';
 import { Header } from '../../components/header/Header';
 import { getDatabase, ref, update } from 'firebase/database';
 import ProgressExercise from '../../components/progressExercise/ProgressExercise';
+import { NotFound } from '../notFound/notFound';
 
 export const Training = () => {
   const navigate = useNavigate();
@@ -24,16 +25,31 @@ export const Training = () => {
 
   //Информация по курсу
   const courses = useSelector((state) => state.coursesApp.allCourses); // все курсы
-  const course = courses?.filter((data) => data.nameEN.includes(courseId)); // текущий курс
-  const courseName = '';
-  const courseNameEN = '';
-  if (!course) {
-    setWrongUrlFlag(true);
-  } else {
-    courseName = course ? course[0].nameRU : 'название не получено'; //название текущего курса на русском
-    courseNameEN = course ? course[0].nameEN : 'название не получено'; //название текущего курса на английском
+  const [course, setCourse] = useState(courses?.filter((data) => data.nameEN.includes(courseId))); // текущий курс
+  let courseName;
+  let courseNameEN;
+  let userExercises;
 
-    const userExercises = user
+
+  useEffect(() => {
+    const courseTemp = courses?.filter((data) => data.nameEN.includes(courseId));
+    console.log(courses);
+    console.log(courseTemp);
+    setCourse(courseTemp);
+    if (!course) {
+      setWrongUrlFlag(true);
+      console.log('Flag true');
+    } else {
+      setWrongUrlFlag(false);
+      console.log('Flag false');
+    }
+  }, [courseId]);
+
+  if (!wrongUrlFlag && course) {
+    courseName = course[0].nameRU; //название текущего курса на русском
+    courseNameEN = course[0].nameEN; //название текущего курса на английском
+
+    userExercises = user
       ? Object.values(Object.values(user.courses).filter((el) => el.name === courseNameEN)[0].workouts).filter(
           (el) => el.name === workoutName
         )[0].exercises
@@ -79,33 +95,43 @@ export const Training = () => {
   };
 
   return (
-    <div className={style.container}>
-      <Header />
-      <main>
-        <h1 className={style.nameTraining}>{courseName}</h1>
-        <h2 className={style.dateLink}>{workoutName}</h2>
-        {/* {<ReactPlayer url={workoutVideo} width='100%' height='720px' /> } */}
+    <>
+      {wrongUrlFlag ? (
+        <NotFound />
+      ) : (
+        <div className={style.container}>
+          <Header />
+          <main>
+            <h1 className={style.nameTraining}>{courseName}</h1>
+            <h2 className={style.dateLink}>{workoutName}</h2>
+            {/* {<ReactPlayer url={workoutVideo} width='100%' height='720px' /> } */}
 
-        <section className={style.resultSection}>
-          {workoutExercises ? (
-            <>
-              <div className={style.exerciseSection}>
-                <span className={style.exerciseTitle}>Упражнения</span>
-                <ul className={style.exerciseList}>
-                  {workoutExercises?.map((exercise) => (
-                    <li key={exercise.name}>{exercise.name}</li>
-                  ))}
-                </ul>
-                <Button onClick={navigateToProgress} className={'button_blue'} children={'Заполнить свой прогресс'} />
-              </div>
-            </>
-          ) : (
-            endWorkout()
-          )}
-          <ProgressExercise exercises={userExercises} currentId={currentId} />
-        </section>
-      </main>
-      <Outlet />
-    </div>
+            <section className={style.resultSection}>
+              {workoutExercises ? (
+                <>
+                  <div className={style.exerciseSection}>
+                    <span className={style.exerciseTitle}>Упражнения</span>
+                    <ul className={style.exerciseList}>
+                      {workoutExercises?.map((exercise) => (
+                        <li key={exercise.name}>{exercise.name}</li>
+                      ))}
+                    </ul>
+                    <Button
+                      onClick={navigateToProgress}
+                      className={'button_blue'}
+                      children={'Заполнить свой прогресс'}
+                    />
+                  </div>
+                </>
+              ) : (
+                endWorkout()
+              )}
+              <ProgressExercise exercises={userExercises} currentId={currentId} />
+            </section>
+          </main>
+          <Outlet />
+        </div>
+      )}
+    </>
   );
 };
